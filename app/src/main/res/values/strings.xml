@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">Terminal</string>
+    <string name="button">Button</string>
+    <string name="send">Send</string>
+    <string name="connect">Connect</string>
+    <string name="port">Port</string>
+    <string name="ip_address">IP Address</string>
+</resources>

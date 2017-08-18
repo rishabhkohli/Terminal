@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/connection_status"
+        android:icon="@drawable/circle"
+        android:title="Connection"
+        app:showAsAction="always" />
+
+    <item
+        android:id="@+id/carriage_return"
+        android:title="Carriage Return"
+        app:showAsAction="never"
+        android:checkable="true"/>
+
+    <item
+        android:id="@+id/line_feed"
+        android:title="Line Feed"
+        app:showAsAction="never"
+        android:checkable="true"/>
+</menu>
