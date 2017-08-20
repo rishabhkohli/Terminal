@@ -32,8 +32,7 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
     private Button sendButton;
     private ArrayList<Message> messageList;
     private LogArrayAdapter logArrayAdapter;
-    private Boolean CR;
-    private Boolean LF;
+    private Boolean CR, LF, clearInput;
     private SharedPreferences sharedPreferences;
 
     @Override
@@ -57,6 +56,7 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
         sharedPreferences = getSharedPreferences("Terminal_settings", MODE_PRIVATE);
         CR = sharedPreferences.getBoolean("CR", true);
         LF = sharedPreferences.getBoolean("LF", true);
+        clearInput = sharedPreferences.getBoolean("clearInput", true);
 
         for (int i = 0; i < extraButtonIDs.length; i++) {
             final int buttonNumber = i + 1;
@@ -121,6 +121,8 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
                 socketHandler.printOut(message);
                 messageList.add(new Message(message.trim(), MessageType.OUTGOING));
                 logArrayAdapter.notifyDataSetChanged();
+
+                if (clearInput) sendMessageEditText.setText("");
             }
         });
 
@@ -150,6 +152,7 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
 
         menu.findItem(R.id.carriage_return).setChecked(CR);
         menu.findItem(R.id.line_feed).setChecked(LF);
+        menu.findItem(R.id.clear_input).setChecked(clearInput);
         return true;
     }
 
@@ -169,6 +172,10 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
             case R.id.line_feed:
                 LF = !LF;
                 sharedPreferences.edit().putBoolean("LF", LF).apply();
+                break;
+            case R.id.clear_input:
+                clearInput = !clearInput;
+                sharedPreferences.edit().putBoolean("clearInput", clearInput).apply();
                 break;
             default:
                 return super.onOptionsItemSelected(item);
