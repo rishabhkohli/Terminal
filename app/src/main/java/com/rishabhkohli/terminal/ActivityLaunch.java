@@ -1,6 +1,5 @@
 package com.rishabhkohli.terminal;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.support.annotation.NonNull;
@@ -16,15 +15,12 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
 
 public class ActivityLaunch extends AppCompatActivity {
 
-    ArrayList<String> connectionDetailsArrayList;
-    ArrayAdapter<String> stringArrayAdapter;
-    SharedPreferences sharedPreferences;
+    private ArrayList<String> connectionDetailsArrayList;
+    private ArrayAdapter<String> stringArrayAdapter;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

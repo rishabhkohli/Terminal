@@ -8,15 +8,15 @@
     android:paddingRight="22dp">
 
     <EditText
-        android:id="@+id/extra_button_title_edittext"
+        android:id="@+id/extra_button_title_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Button Title"/>
+        android:hint="@string/button_title"/>
 
     <EditText
-        android:id="@+id/extra_button_message_edittext"
+        android:id="@+id/extra_button_message_editText"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="Button Message"/>
+        android:hint="@string/button_message"/>
 
 </LinearLayout>

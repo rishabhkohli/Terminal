@@ -10,8 +10,8 @@ import android.widget.TextView;
 
 import java.util.ArrayList;
 
-public class LogArrayAdapter extends ArrayAdapter<Message> {
-    public LogArrayAdapter(Context context, ArrayList<Message> messages) {
+class LogArrayAdapter extends ArrayAdapter<Message> {
+    LogArrayAdapter(Context context, ArrayList<Message> messages) {
         super(context, 0, messages);
     }
 
@@ -22,7 +22,7 @@ public class LogArrayAdapter extends ArrayAdapter<Message> {
 
         // Check if an existing view is being reused, otherwise inflate the view
         if (convertView == null) {
-            convertView = LayoutInflater.from(getContext()).inflate(R.layout.simple_list_item, null);
+            convertView = LayoutInflater.from(getContext()).inflate(R.layout.simple_list_item, parent, false);
         }
 
         // Lookup view for data population

@@ -1,12 +1,8 @@
 package com.rishabhkohli.terminal;
 
-import android.content.Context;
-import android.os.AsyncTask;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.net.InetSocketAddress;
@@ -17,12 +13,12 @@ interface SocketDelegate {
     void onDisconnect();
 }
 
-public class SocketHandler {
+class SocketHandler {
     private Socket socket;
     private BufferedReader in;
     private BufferedWriter out;
 
-    public synchronized void printOut(String message) {
+    synchronized void printOut(String message) {
         final String outputMessage = message;
         new Thread(new Runnable() {
             @Override
@@ -38,7 +34,7 @@ public class SocketHandler {
         }).start();
     }
 
-    public synchronized boolean setSocket(String IP, int Port, final SocketDelegate sD) {
+    synchronized boolean setSocket(String IP, int Port, final SocketDelegate sD) {
         try {
             socket = new Socket();
             socket.connect(new InetSocketAddress(IP, Port), 2000);
@@ -72,7 +68,7 @@ public class SocketHandler {
         }
     }
 
-    public synchronized void closeSocket() {
+    synchronized void closeSocket() {
         try {
             socket.close();
         } catch (IOException | NullPointerException e) {
@@ -80,11 +76,11 @@ public class SocketHandler {
         }
     }
 
-    public synchronized boolean isClosed() {
+    synchronized boolean isClosed() {
         return socket.isClosed();
     }
 
-    public synchronized boolean isConnected() {
+    synchronized boolean isConnected() {
         return socket.isConnected();
     }
 }

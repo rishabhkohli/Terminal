@@ -1,6 +1,5 @@
 package com.rishabhkohli.terminal;
 
-import android.app.Dialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.SharedPreferences;
@@ -8,36 +7,34 @@ import android.graphics.Color;
 import android.graphics.PorterDuff;
 import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
+import android.os.Bundle;
+import android.support.constraint.ConstraintLayout;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
-import android.util.Log;
-import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
-import android.widget.Toolbar;
 
 import java.util.ArrayList;
 
 public class ActivityTerminal extends AppCompatActivity implements SocketDelegate {
 
-    String ip;
-    int port;
-    SocketHandler socketHandler;
-    EditText sendMessageEditText;
-    Button sendButton;
-    ListView logListView;
-    ArrayList<Message> messageList;
-    LogArrayAdapter logArrayAdapter;
-    Boolean CR = true, LF = true;
+    private String ip;
+    private int port;
+    private SocketHandler socketHandler;
+    private EditText sendMessageEditText;
+    private Button sendButton;
+    private ArrayList<Message> messageList;
+    private LogArrayAdapter logArrayAdapter;
+    private Boolean CR;
+    private Boolean LF;
+    private SharedPreferences sharedPreferences;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,15 +52,17 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
         connect(ip, port);
 
         int[] extraButtonIDs = new int[]{R.id.extra_button_1, R.id.extra_button_2, R.id.extra_button_3, R.id.extra_button_4, R.id.extra_button_5, R.id.extra_button_6, R.id.extra_button_7, R.id.extra_button_8, R.id.extra_button_9, R.id.extra_button_10};
-        Button[] extraButtons = new Button[extraButtonIDs.length];
+        final Button[] extraButtons = new Button[extraButtonIDs.length];
 
-        final SharedPreferences sharedPreferences = getSharedPreferences("Button_settings", MODE_PRIVATE);
+        sharedPreferences = getSharedPreferences("Terminal_settings", MODE_PRIVATE);
+        CR = sharedPreferences.getBoolean("CR", true);
+        LF = sharedPreferences.getBoolean("LF", true);
 
         for (int i = 0; i < extraButtonIDs.length; i++) {
-            final int buttonNumber = i;
+            final int buttonNumber = i + 1;
             extraButtons[i] = (Button) findViewById(extraButtonIDs[i]);
-            extraButtons[i].setText(sharedPreferences.getString("Button_"+buttonNumber+"_title", ""));
-            extraButtons[i].setTag(sharedPreferences.getString("Button_"+buttonNumber+"_message", ""));
+            extraButtons[i].setText(sharedPreferences.getString("Button_" + buttonNumber + "_title", "Button " + buttonNumber));
+            extraButtons[i].setTag(sharedPreferences.getString("Button_" + buttonNumber + "_message", ""));
 
             extraButtons[i].setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -77,19 +76,22 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
                 @Override
                 public boolean onLongClick(final View v) {
                     final AlertDialog.Builder builder = new AlertDialog.Builder(ActivityTerminal.this);
-                    builder.setView(R.layout.extra_button_dialog_layout)
+                    final View view = getLayoutInflater().inflate(R.layout.extra_button_dialog_layout, (ConstraintLayout)findViewById(R.id.terminal_container), false);
+                    final EditText buttonTitleEditText = (EditText) (view.findViewById(R.id.extra_button_title_editText));
+                    final EditText buttonMessageEditText = (EditText) (view.findViewById(R.id.extra_button_message_editText));
+                    buttonTitleEditText.setText(extraButtons[buttonNumber - 1].getText());
+                    buttonMessageEditText.setText((String) extraButtons[buttonNumber - 1].getTag());
+                    builder.setView(view)
                             .setMessage("Button " + buttonNumber)
                             .setPositiveButton("Save", new DialogInterface.OnClickListener() {
                                 @Override
                                 public void onClick(DialogInterface dialog, int which) {
-                                    EditText buttonTitleEditText = (EditText) (((Dialog) dialog).findViewById(R.id.extra_button_title_edittext));
-                                    EditText buttonMessageEditText = (EditText) (((Dialog) dialog).findViewById(R.id.extra_button_message_edittext));
                                     ((Button) v).setText(buttonTitleEditText.getText().toString());
                                     v.setTag(buttonMessageEditText.getText().toString());
 
                                     SharedPreferences.Editor editor = sharedPreferences.edit();
-                                    editor.putString("Button_"+buttonNumber+"_title", buttonTitleEditText.getText().toString());
-                                    editor.putString("Button_"+buttonNumber+"_message", buttonMessageEditText.getText().toString());
+                                    editor.putString("Button_" + buttonNumber + "_title", buttonTitleEditText.getText().toString());
+                                    editor.putString("Button_" + buttonNumber + "_message", buttonMessageEditText.getText().toString());
                                     editor.apply();
                                 }
                             })
@@ -122,11 +124,11 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
             }
         });
 
-        logListView = (ListView) findViewById(R.id.listView);
+        ListView logListView = (ListView) findViewById(R.id.listView);
         logListView.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                copyToClipboard(((TextView)view).getText().toString());
+                copyToClipboard(((TextView) view).getText().toString());
                 return true;
             }
         });
@@ -160,16 +162,18 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
                 } else {
                     disconnect();
                 }
-                return true;
             case R.id.carriage_return:
                 CR = !CR;
-                return true;
+                sharedPreferences.edit().putBoolean("CR", CR).apply();
+                break;
             case R.id.line_feed:
                 LF = !LF;
-                return true;
+                sharedPreferences.edit().putBoolean("LF", LF).apply();
+                break;
             default:
                 return super.onOptionsItemSelected(item);
         }
+        return true;
     }
 
     @Override
@@ -208,7 +212,7 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
         });
     }
 
-    public void copyToClipboard(String text) {
+    private void copyToClipboard(String text) {
         try {
             android.content.ClipboardManager clipboard = (android.content.ClipboardManager) getSystemService(Context.CLIPBOARD_SERVICE);
             android.content.ClipData clip = android.content.ClipData.newPlainText("WordKeeper", text);

@@ -1,23 +1,23 @@
 package com.rishabhkohli.terminal;
 
 enum MessageType {
-    INCOMING, OUTGOING;
+    INCOMING, OUTGOING
 }
 
-public class Message {
-    private String message;
-    private MessageType type;
+class Message {
+    final private String message;
+    final private MessageType type;
 
-    public Message(String message, MessageType type) {
+    Message(String message, MessageType type) {
         this.message = message;
         this.type = type;
     }
 
-    public String getMessage() {
+    String getMessage() {
         return message;
     }
 
-    public MessageType getMessageType() {
+    MessageType getMessageType() {
         return type;
     }
 }

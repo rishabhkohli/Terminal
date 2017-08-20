@@ -4,18 +4,18 @@
     <item
         android:id="@+id/connection_status"
         android:icon="@drawable/circle"
-        android:title="Connection"
-        app:showAsAction="always" />
+        android:title="@string/connection"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/carriage_return"
-        android:title="Carriage Return"
+        android:title="@string/carriage_return"
         app:showAsAction="never"
         android:checkable="true"/>
 
     <item
         android:id="@+id/line_feed"
-        android:title="Line Feed"
+        android:title="@string/line_feed"
         app:showAsAction="never"
         android:checkable="true"/>
 </menu>

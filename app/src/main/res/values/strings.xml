@@ -5,4 +5,10 @@
     <string name="connect">Connect</string>
     <string name="port">Port</string>
     <string name="ip_address">IP Address</string>
+    <string name="delete_button">Delete Button</string>
+    <string name="connection">Connection</string>
+    <string name="carriage_return">Carriage Return</string>
+    <string name="line_feed">Line Feed</string>
+    <string name="button_title">Button Title</string>
+    <string name="button_message">Button Message</string>
 </resources>
