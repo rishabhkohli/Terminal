@@ -1,2 +1,2 @@
 # Terminal
-A small app to communicate with servers over TCP sockets.
+A small android app to communicate with servers over TCP sockets.

@@ -2,10 +2,10 @@ package com.rishabhkohli.terminal;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.AdapterView;
@@ -88,6 +88,7 @@ public class ActivityLaunch extends AppCompatActivity {
         }
         editor.putInt("count", connectionDetailsArrayList.size());
         editor.apply();
+        stringArrayAdapter.notifyDataSetChanged();
     }
 
     private void deleteEntry(int position) {

@@ -61,7 +61,7 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
         for (int i = 0; i < extraButtonIDs.length; i++) {
             final int buttonNumber = i + 1;
             extraButtons[i] = (Button) findViewById(extraButtonIDs[i]);
-            extraButtons[i].setText(sharedPreferences.getString("Button_" + buttonNumber + "_title", "Button " + buttonNumber));
+            extraButtons[i].setText(sharedPreferences.getString("Button_" + buttonNumber + "_title", "Btn " + buttonNumber));
             extraButtons[i].setTag(sharedPreferences.getString("Button_" + buttonNumber + "_message", ""));
 
             extraButtons[i].setOnClickListener(new View.OnClickListener() {
@@ -193,6 +193,7 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
                             invalidateOptionsMenu();
                             sendButton.setEnabled(true);
                             sendMessageEditText.setEnabled(true);
+                            Toast.makeText(getApplicationContext(), "Connected", Toast.LENGTH_SHORT).show();
                         }
                     });
                 }
@@ -237,6 +238,12 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
 
     @Override
     public void onDisconnect() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                Toast.makeText(getApplicationContext(), "Disconnected", Toast.LENGTH_SHORT).show();
+            }
+        });
         disconnect();
     }
 }
