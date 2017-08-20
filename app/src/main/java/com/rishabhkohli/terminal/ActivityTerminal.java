@@ -163,7 +163,7 @@ public class ActivityTerminal extends AppCompatActivity implements SocketDelegat
                 if (socketHandler.isClosed()) {
                     connect(ip, port);
                 } else {
-                    disconnect();
+                    onDisconnect(); //should make the toast that is defined in onDisconnect()
                 }
             case R.id.carriage_return:
                 CR = !CR;
