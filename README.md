@@ -4,4 +4,4 @@ Buttons copy their value to the send textbox incase you need to change the messa
 
 
 # Screenshots
-<img src="/Screenshots/Screenshot_1503233826.png" width="40%"></img> <img src="/Screenshots/Screenshot_1503233690.png" width="40%"></img>
+<img src="/Screenshots/Screenshot_1503233826.png" width="30%"></img> <img src="/Screenshots/Screenshot_1503233690.png" width="30%"></img> <img src="/Screenshots/Screenshot_1503236425.png" width="30%"></img>
